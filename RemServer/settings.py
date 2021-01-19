@@ -70,11 +70,11 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'ReemServer.wsgi.application'
+WSGI_APPLICATION = 'RemServer.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/3.1/ref/settings/#databases
+# https://docs.djang,project.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
     'default': {
@@ -93,7 +93,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    }
+    },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
