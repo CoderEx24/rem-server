@@ -1,4 +1,4 @@
-# ReemServer
+# RemServer
 
 This repo contians the server of the virtual nurse
 the server is reponsible for registering users and keeping a record of the symptoms they report
@@ -13,12 +13,12 @@ The Server has 4 jobs
 ### Setup
 1. Clone this repo
 ```
-$ git clone https://github.com/CoderEx24/reem-server
+$ git clone https://github.com/CoderEx24/rem-server
 ```
 2. Setup a virtual environment
 ```
 $ python3 -m virtualenv .venv
-$ . venv/bin/activate
+$ . .venv/bin/activate
 (.venv) $ python3 -m pip install -r requirements
 ```
 

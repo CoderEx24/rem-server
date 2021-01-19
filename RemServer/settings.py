@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    'reem',
+    'rem',
 ]
 
 MIDDLEWARE = [
@@ -52,7 +52,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'ReemServer.urls'
+ROOT_URLCONF = 'RemServer.urls'
 
 TEMPLATES = [
     {
@@ -93,7 +93,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
+    }
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
