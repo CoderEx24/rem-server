@@ -1,5 +1,7 @@
 from rest_framework import status
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.decorators import api_view, authentication_classes, \
+    permission_classes, parser_classes
+from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
@@ -37,3 +39,12 @@ def api_get_incidents(req, maxsize=50):
     serializer = IncidentSerializer(incidents, many=True)
     return Response(serializer.data, status.HTTP_200_OK)
 
+@api_view(['POST'])
+@parser_classes([JSONParser])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def api_post_incident(req):
+    serializer = IncidentSerializer(data=req.data)
+    serializer.is_valid(raise_exception=True)
+    serializer.save(user=req.user)
+    return Response(status=status.HTTP_202_ACCEPTED)
