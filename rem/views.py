@@ -6,9 +6,22 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
+import pickle
+import os
 from .forms import *
 from .models import *
 from .serializers import *
+
+dirname = os.path.dirname(__file__)
+model = pickle.load(open(f'{dirname}/assets/model.bin', 'rb'))
+symptoms_list = []
+disease_list = []
+
+with open(f'{dirname}/assets/symptoms_list.txt') as f:
+    symptoms_list = [line.strip() for line in f.readlines()]
+
+with open(f'{dirname}/assets/disease_list.txt') as f:
+    disease_list = [line.strip() for line in f.readlines()]
 
 @api_view(['POST'])
 def api_signup(req):
