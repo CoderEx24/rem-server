@@ -4,5 +4,6 @@ from .models import *
 class IncidentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Incident
-        fields = ['time', 'symptoms', 'diagnosis']
+        fields = ['symptoms']
+        read_only_fields = ['time', 'diagnosis']
 
