@@ -31,7 +31,7 @@ def api_signup(req):
         new_token, _ = Token.objects.get_or_create(user=new_user)
         return Response(f'Token {new_token}', status.HTTP_201_CREATED)
 
-    return Response(f'{form.error_messages}', status.HTTP_406_NOT_ACCEPTABLE)
+    return Response(f'{form.error_messages}\n{form.cleaned_data}', status.HTTP_406_NOT_ACCEPTABLE)
 
 @api_view(['POST'])
 def api_login(req):
@@ -59,5 +59,10 @@ def api_get_incidents(req, maxsize=50):
 def api_post_incident(req):
     serializer = IncidentSerializer(data=req.data)
     serializer.is_valid(raise_exception=True)
-    serializer.save(user=req.user)
-    return Response(status=status.HTTP_202_ACCEPTED)
+    instance = serializer.instance
+    symptoms = instance.symptoms
+    diagnosis_index = model.predict(symptoms)
+    diagnosis = disease_list[diagnosis_index]
+    instance.diagnosis = diagnosis
+    instance.save()
+    return Response(f"Diagnosis {diagnosis}", status=status.HTTP_202_ACCEPTED)
