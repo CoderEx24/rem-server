@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.decorators import api_view, authentication_classes, \
     permission_classes, parser_classes
-from rest_framework.parsers import JSONParser
+from rest_framework.parsers import JSONParser, FormParser
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
@@ -31,7 +31,7 @@ def api_signup(req):
         new_token, _ = Token.objects.get_or_create(user=new_user)
         return Response(f'Token {new_token}', status.HTTP_201_CREATED)
 
-    return Response(f'{form.error_messages}\n{form.cleaned_data}', status.HTTP_406_NOT_ACCEPTABLE)
+    return Response(f'{form.error_messages}', status.HTTP_406_NOT_ACCEPTABLE)
 
 @api_view(['POST'])
 def api_login(req):
@@ -53,16 +53,14 @@ def api_get_incidents(req, maxsize=50):
     return Response(serializer.data, status.HTTP_200_OK)
 
 @api_view(['POST'])
-@parser_classes([JSONParser])
+@parser_classes([JSONParser, FormParser])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def api_post_incident(req):
     serializer = IncidentSerializer(data=req.data)
     serializer.is_valid(raise_exception=True)
-    instance = serializer.instance
-    symptoms = instance.symptoms
-    diagnosis_index = model.predict(symptoms)
-    diagnosis = disease_list[diagnosis_index]
-    instance.diagnosis = diagnosis
-    instance.save()
+    symptoms = int(serializer.validated_data['symptoms'])
+    diagnosis_index = model.predict([[symptoms]])
+    diagnosis = disease_list[diagnosis_index[0]]
+    serializer.save(user=req.user, diagnosis=diagnosis)
     return Response(f"Diagnosis {diagnosis}", status=status.HTTP_202_ACCEPTED)
